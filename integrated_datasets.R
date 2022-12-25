@@ -1,13 +1,22 @@
 ##integrated datasets
 
-install.packages("readxl")
+library("readxl")
 library("tidyverse")
+library("tidyselect")
+
 
 Sys.setlocale("LC_ALL", "Polish")
 
 stores <- readxl::read_excel(path = "C:/Users/Alon/OneDrive/Docs/GitHub/Excel_files/Stores.xlsx")
 
 salesJan2020 <- read_csv("C:/Users/Alon/OneDrive/Docs/GitHub/Excel_files/Summary of Sales January 2020.csv")
+
+#truncating store names
+salesJan2020$'STORE NAME' <- gsub(' GROSS', '', salesJan2020$'STORE NAME')
+salesJan2020$'STORE NAME' <- gsub(' OTHER', '', salesJan2020$'STORE NAME')
+salesJan2020$'STORE NAME' <- gsub(' RETAIL', '', salesJan2020$'STORE NAME')
+
+salesJan2020$'STORE NAME'
 
 #replacing false names with proper ones from the file
 for (store in salesJan2020$'STORE NAME') {
@@ -26,6 +35,6 @@ for (store in salesJan2020$'STORE NAME') {
   salesJan2020[salesJan2020=="PARVIFLORA RZESZOW"] <- "Parviflora Rzeszów"
   salesJan2020[salesJan2020=="PARVIFLORA OSTRO??KA"] <- "Parviflora Ostrołęka"
   salesJan2020[salesJan2020=="PARVIFLORA W?CHOCK"] <- "Parviflora Wąchock"
-  salesJan2020[salesJan2020=="PARVIFLORA ?WIEBODZIN"] <- "Świebodzin"
+  salesJan2020[salesJan2020=="PARVIFLORA ?WIEBODZIN"] <- "Parviflora Świebodzin"
 }
 salesJan2020$'STORE NAME'
