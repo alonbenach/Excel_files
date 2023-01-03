@@ -4,7 +4,6 @@ library("readxl")
 library("tidyverse")
 library("tidyselect")
 
-Sys.setlocale("LC_ALL", "Polish")
 Sys.getlocale()
 
 stores <- readxl::read_excel(path = "C:/Users/Alon/OneDrive/Docs/GitHub/Excel_files/Stores.xlsx")
@@ -22,23 +21,36 @@ truncate_sales <- function(df) {
 sales$'STORE NAME' <- truncate_sales(sales)
 
 #replacing false names with proper ones from the file
+for(i in sales$`STORE NAME`){
+  if(i == "PARVIFLORA ?OM?A"){
+    sales[sales == "PARVIFLORA ?OM?A"] <- "PARVIFLORA ŁOMŻA"
+  } else if(i == "PARVIFLORA WROC?AW"){
+    sales[sales == "PARVIFLORA WROC?AW"] <- "PARVIFLORA WROCŁAW"
+  } else if(i == "PARVIFLORA ?ÓD?"){
+    sales[sales =="PARVIFLORA ?ÓD?"] <- "PARVIFLORA ŁÓDŹ"
+  } else if(i == "PARVIFLORA POZNA?"){
+    sales[sales=="PARVIFLORA POZNA?"] <- "PARVIFLORA POZNAŃ"
+  } else if(i == "PARVIFLORA GDA?SK"){
+    sales[sales == "PARVIFLORA GDA?SK"] <- "PARVIFLORA GDAŃSK"
+  } else if(i == "PARVIFLORA CHE?M"){
+    sales[sales == "PARVIFLORA CHE?M"] <- "PARVIFLORA CHEŁM"
+  } else if(i == "PARVIFLORA BIA?YSTOK"){
+    sales[sales == "PARVIFLORA BIA?YSTOK"] <- "PARVIFLORA BIAŁYSTOK"
+  } else if(i == "PARVIFLORA SUWA?KI"){
+    sales[sales == "PARVIFLORA SUWA?KI"] <- "PARVIFLORA SUWAŁKI"
+  } else if(i == "PARVIFLORA TORU?"){
+    sales[sales == "PARVIFLORA TORU?"] <- "PARVIFLORA TORUŃ"
+  } else if(i == "PARVIFLORA PRZEMY?L"){
+    sales[sales == "PARVIFLORA PRZEMY?L"] <- "PARVIFLORA PRZEMŚL"
+  } else if(i == "PARVIFLORA OSTRO??KA"){
+    sales[sales == "PARVIFLORA OSTRO??KA"] <- "PARVIFLORA OSTROŁĘKA"
+  } else if(i == "PARVIFLORA W?CHOCK"){
+    sales[sales == "PARVIFLORA W?CHOCK"] <- "PARVIFLORA WĄCHOCK"
+  } else if(i == "PARVIFLORA ?WIEBODZIN"){
+    sales[sales == "PARVIFLORA ?WIEBODZIN"] <- "PARVIFLORA ŚWIEBODZIN"
+  }
+}
 
-sales[sales=="PARVIFLORA ?OM?A"] <- "Parviflora Łomża"
-sales[sales=="PARVIFLORA WROC?AW"] <- "Parviflora Wrocław"
-sales[sales=="PARVIFLORA ?\xd3D?"] <- "Parviflora Łódź" #problem with identifying the false name - Ó
-sales[sales=="PARVIFLORA POZNA?"] <- "Parviflora Poznań"
-sales[sales=="PARVIFLORA KRAK\xd3W"] <- "Parviflora Kraków" #problem with identifying the false name Ó
-sales[sales=="PARVIFLORA GDA?SK"] <- "Parviflora Gdańsk"
-sales[sales=="PARVIFLORA CHE?M"] <- "Parviflora Chełm"
-sales[sales=="PARVIFLORA BIA?YSTOK"] <- "Parviflora Białystok"
-sales[sales=="PARVIFLORA SUWA?KI"] <- "Parviflora Suwałki"
-sales[sales=="PARVIFLORA TORU?"] <- "Parviflora Toruń"
-sales[sales=="PARVIFLORA GORZ\xd3W WLKP."] <- "Parviflora Gorzów Wlkp." #problem with identifying the false name Ó
-sales[sales=="PARVIFLORA PRZEMY?L"] <- "Parviflora Przemyśl"
-sales[sales=="PARVIFLORA RZESZ\xd3W"] <- "Parviflora Rzeszów"
-sales[sales=="PARVIFLORA OSTRO??KA"] <- "Parviflora Ostrołęka"
-sales[sales=="PARVIFLORA W?CHOCK"] <- "Parviflora Wąchock"
-sales[sales=="PARVIFLORA ?WIEBODZIN"] <- "Parviflora Świebodzin"
 
 sales$'STORE NAME'
 
