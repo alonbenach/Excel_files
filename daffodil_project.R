@@ -1,19 +1,54 @@
+#reading an infinite number of tabs into a list of DFs
+# load library
+install.packages("gdata", dependencies = TRUE)
+install.packages("openxlsx", dependencies = TRUE)
+library("openxlsx")
+library("gdata")
+library("readxl")
 library("readxl")
 library("tidyverse")
 library("tidyselect")
 
-#loading Daffodils by tab and Stores
-daff_sales_jan <- read_excel('Daffodils2020.xls')
-daff_sales_feb <- read_excel('Daffodils2020.xls',2)
-daff_sales_mar <- read_excel('Daffodils2020.xls',3)
+myDir <- getwd()
+mylist <- lapply(1:gdata::sheetCount('Daffodils2020.xls'), function(i) read_excel('Daffodils2020.xls', sheet = i))
+names(mylist) <- paste0(excel_sheets(path = 'Daffodils2020.xls'))
+
+#reading the stores file
 stores1<- read_excel("Stores.xlsx")
 
+for (i in names(mylist)){
+  if (startsWith(i, 'Jan')){
+    daff_sales_jan <- mylist[[i]]
+  } else if (startsWith(i, 'Feb')){
+    daff_sales_feb <- mylist[[i]]
+  } else if (startsWith(i, 'Mar')){
+    daff_sales_mar <- mylist[[i]]
+  } else if (startsWith(i, 'Apr')){
+    daff_sales_apr <- mylist[[i]]
+  } else if (startsWith(i, 'May')){
+    daff_sales_may <- mylist[[i]]
+  } else if (startsWith(i, 'Jun')){
+    daff_sales_jun <- mylist[[i]]
+  } else if (startsWith(i, 'Jul')){
+    daff_sales_jul <- mylist[[i]]
+  } else if (startsWith(i, 'Aug')){
+    daff_sales_aug <- mylist[[i]]
+  } else if (startsWith(i, 'Sep')){
+    daff_sales_sep <- mylist[[i]]
+  } else if (startsWith(i, 'Oct')){
+    daff_sales_oct <- mylist[[i]]
+  } else if (startsWith(i, 'Nov')){
+    daff_sales_nov <- mylist[[i]]
+  } else if (startsWith(i, 'Dec')){
+    daff_sales_dec <- mylist[[i]]
+  } else break
+}
 #setting column names for each daffodils file
 colnames(daff_sales_jan)[1]  <- "col1"
 colnames(daff_sales_jan)[2]  <- "col2"
 colnames(daff_sales_jan)[3]  <- "col3"
 
-#creting a tibble of location ID extensions from location IDs
+#creating a tibble of location ID extensions from location IDs
 daff_sales_jan_loc <- daff_sales_jan %>% select("col1","col2","col3") %>% 
   filter(col1 == "Submitting Location:") %>% select(col3) %>% rename("loc_ID" = "col3")
 #creating a tibble of totals from sales
@@ -59,7 +94,6 @@ stores <- stores1 %>% rename("loc_ID" = "Store ID","store_name" = "Store Name") 
 jan_daff_sales <- daff_jan %>% left_join(stores, by= "loc_ID") %>% mutate(store=toupper(`store_name`)) %>% select(-loc_ID, -store_name) %>% select('store', 'COUNT DAFFODIL' = 'COUNT', 'DAFFODIL')
 feb_daff_sales <- daff_feb %>% left_join(stores, by= "loc_ID") %>% mutate(store=toupper(`store_name`)) %>% select(-loc_ID, -store_name) %>% select('store', 'COUNT DAFFODIL' = 'COUNT', 'DAFFODIL')
 mar_daff_sales <- daff_mar %>% left_join(stores, by= "loc_ID") %>% mutate(store=toupper(`store_name`)) %>% select(-loc_ID, -store_name) %>% select('store', 'COUNT DAFFODIL' = 'COUNT', 'DAFFODIL')
-
 
 #Alon's code, relates only to January for now
 sales <- read_csv("C:/Users/Alon/OneDrive/Docs/GitHub/Excel_files/Summary of Sales January 2020.csv", col_names = TRUE)
@@ -113,9 +147,10 @@ sales1 <- sales1 %>%
   rowwise() %>% 
   mutate(count_total = sum(c_across(starts_with("COUNT")), na.rm = T)) %>% 
   ungroup()
-  
+
 sales1 <- sales1 %>%
   rowwise() %>% 
   mutate(sum_total = sum(c_across(-starts_with(c("COUNT", 'store', 'sum'))), na.rm = T)) %>% 
   ungroup()
-?startsWith
+
+
