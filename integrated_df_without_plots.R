@@ -15,8 +15,12 @@ library("tidyselect")
 #another option is to generalize the call to read any single file named "Daffodils",
 #assuming there will only be one in the folder, corresponding to the summaries by month.
 #let's talk and figure this out together.
-mylist <- lapply(1:gdata::sheetCount('Daffodils2020.xls'), function(i) read_excel('Daffodils2020.xls', sheet = i))
-names(mylist) <- paste0(excel_sheets(path = 'Daffodils2020.xls'))
+#mylist <- lapply(1:gdata::sheetCount('Daffodils2020.xls'), function(i) read_excel('Daffodils2020.xls', sheet = i))
+#names(mylist) <- paste0(excel_sheets(path = 'Daffodils2020.xls'))
+
+mylist <- lapply(1:gdata::sheetCount(list.files(path=".", pattern="Daffodils", all.files=TRUE,full.names=FALSE)), function(i) read_excel(list.files(path=".", pattern="Daffodils", all.files=TRUE,full.names=FALSE), sheet = i))
+names(mylist) <- paste0(excel_sheets(path = list.files(path=".", pattern="Daffodils", all.files=TRUE,full.names=FALSE)))
+
 
 #reading the stores file
 stores1<- read_excel("Stores.xlsx")
@@ -170,7 +174,7 @@ for (df in seq_along(lsummary_by_month)){
     } else if(i == "PARVIFLORA TORU?"){
       lsummary_by_month[[df]][lsummary_by_month[[df]] == "PARVIFLORA TORU?"] <- "PARVIFLORA TORUN"
     } else if(i == "PARVIFLORA PRZEMY?L"){
-      lsummary_by_month[[df]][lsummary_by_month[[df]] == "PARVIFLORA PRZEMY?L"] <- "PARVIFLORA PRZEMSL"
+      lsummary_by_month[[df]][lsummary_by_month[[df]] == "PARVIFLORA PRZEMY?L"] <- "PARVIFLORA PRZEMYSL"
     } else if(i == "PARVIFLORA OSTRO??KA"){
       lsummary_by_month[[df]][lsummary_by_month[[df]] == "PARVIFLORA OSTRO??KA"] <- "PARVIFLORA OSTROLEKA"
     } else if(i == "PARVIFLORA W?CHOCK"){
