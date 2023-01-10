@@ -9,7 +9,7 @@ library("readxl")
 library("tidyverse")
 library("tidyselect")
 
-myDir <- getwd()
+#myDir <- getwd()
 mylist <- lapply(1:gdata::sheetCount('Daffodils2020.xls'), function(i) read_excel('Daffodils2020.xls', sheet = i))
 names(mylist) <- paste0(excel_sheets(path = 'Daffodils2020.xls'))
 
@@ -41,8 +41,9 @@ for (i in names(mylist)){
     daff_sales_nov <- mylist[[i]]
   } else if (startsWith(i, 'Dec')){
     daff_sales_dec <- mylist[[i]]
-  } else break
+  }
 }
+
 #setting column names for each daffodils file
 colnames(daff_sales_jan)[1]  <- "col1"
 colnames(daff_sales_jan)[2]  <- "col2"
@@ -96,7 +97,7 @@ feb_daff_sales <- daff_feb %>% left_join(stores, by= "loc_ID") %>% mutate(store=
 mar_daff_sales <- daff_mar %>% left_join(stores, by= "loc_ID") %>% mutate(store=toupper(`store_name`)) %>% select(-loc_ID, -store_name) %>% select('store', 'COUNT DAFFODIL' = 'COUNT', 'DAFFODIL')
 
 #Alon's code, relates only to January for now
-sales <- read_csv("C:/Users/Alon/OneDrive/Docs/GitHub/Excel_files/Summary of Sales January 2020.csv", col_names = TRUE)
+sales <- read_csv("Summary of Sales January 2020.csv", col_names = TRUE)
 colnames(sales) <- (c('STORE NAME', 'STORE #', 'COUNT AZALEA', 'AZALEA', 'COUNT BEGONIA', 'BEGONIA', 'COUNT CARNATION', 'CARNATION', 'COUNT DAFFODILS', 'DAFFODILS', 'COUNT_TOTAL', 'TOTAL'))
 
 #truncating store names
